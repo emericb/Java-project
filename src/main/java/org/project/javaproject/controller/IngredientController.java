@@ -29,14 +29,19 @@ public class IngredientController {
         return ingredient.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public Ingredient createIngredient(@RequestBody Ingredient ingredient) {
-        return ingredientService.saveIngredient(ingredient);
+    @GetMapping("/barcode/{barcode}")
+    public ResponseEntity<Ingredient> getIngredientByBarcode(@PathVariable String barcode) {
+        Optional<Ingredient> ingredient = ingredientService.getIngredientByBarcode(barcode);
+        return ingredient.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteIngredient(@PathVariable Long id) {
-        ingredientService.deleteIngredient(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/search")
+    public List<Ingredient> searchIngredientsByName(@RequestParam String name) {
+        return ingredientService.searchIngredientsByName(name);
+    }
+
+    @GetMapping("/category")
+    public List<Ingredient> searchIngredientsByCategory(@RequestParam String category) {
+        return ingredientService.searchIngredientsByCategory(category);
     }
 }
