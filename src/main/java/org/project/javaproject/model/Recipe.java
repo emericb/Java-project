@@ -21,13 +21,13 @@ public class Recipe {
     private String description;
 
     @ManyToMany
-    private Set<Ingredient> ingredients;
+    private Set<Product> products;
 
-    public Recipe(Long id, String name, String description, Set<Ingredient> ingredients) {
+    public Recipe(Long id, String name, String description, Set<Product> products) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.ingredients = ingredients;
+        this.products = products;
     }
 
     public Recipe() {
