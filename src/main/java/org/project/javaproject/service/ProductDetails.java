@@ -13,8 +13,8 @@ public class ProductDetails {
     @JsonProperty("abbreviated_product_name_fr")
     private String abbreviatedProductNameFr;
 
-    @JsonProperty("categories")
-    private String categories;
+    @JsonProperty("categories_hierarchy")
+    private String[] categories;
 
     @JsonProperty("quantity")
     private String quantity;
@@ -24,4 +24,14 @@ public class ProductDetails {
 
     @JsonProperty("allergens_imported")
     private String allergens;
+
+    public String getCategories() {
+        for (String cat : this.categories) {
+            if (cat.startsWith("fr:")) {
+                cat = cat.substring(3);
+                return cat;
+            }
+        }
+        return null;
+    }
 }

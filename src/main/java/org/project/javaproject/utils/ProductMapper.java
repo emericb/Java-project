@@ -3,6 +3,8 @@ package org.project.javaproject.utils;
 import org.project.javaproject.model.Product;
 import org.project.javaproject.service.ProductApiResponse;
 
+import java.util.Arrays;
+
 public class ProductMapper {
 
     public static Product mapToProduct(ProductApiResponse apiResponse) {
