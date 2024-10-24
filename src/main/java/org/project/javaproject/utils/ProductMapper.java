@@ -12,6 +12,7 @@ public class ProductMapper {
         product.setCategory(apiResponse.getProductDetails().getCategories());
         product.setQuantity(apiResponse.getProductDetails().getQuantity());
         product.setEnergyKcal(apiResponse.getProductDetails().getNutriments().getEnergyKcal());
+        product.setAllergens(apiResponse.getProductDetails().getAllergens());
         return product;
     }
 }

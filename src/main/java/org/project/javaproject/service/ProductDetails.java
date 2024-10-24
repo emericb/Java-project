@@ -21,4 +21,7 @@ public class ProductDetails {
 
     @JsonProperty("nutriments")
     private NutrimentDetails nutriments;
+
+    @JsonProperty("allergens_imported")
+    private String allergens;
 }
