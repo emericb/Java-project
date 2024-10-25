@@ -2,6 +2,7 @@ package org.project.javaproject.service;
 
 import org.project.javaproject.model.Product;
 import org.project.javaproject.utils.ProductMapper;
+import org.project.javaproject.utils.SearchProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,7 +14,6 @@ import java.util.Optional;
 public class ProductService {
 
     private final RestTemplate restTemplate;
-    private final String apiUrl = "https://world.openfoodfacts.org/api/v2/product/";
 
     @Autowired
     public ProductService(RestTemplate restTemplate) {
@@ -21,6 +21,7 @@ public class ProductService {
     }
 
     public Optional<Product> getProductByBarcode(String barcode) {
+        String apiUrl = "https://world.openfoodfacts.org/api/v2/product/";
         String url = apiUrl + barcode + ".json";
         ProductApiResponse apiResponse = restTemplate.getForObject(url, ProductApiResponse.class);
 
@@ -32,16 +33,16 @@ public class ProductService {
         return Optional.empty();
     }
 
-    public List<Product> getAllProducts() {
-        return List.of();
-    }
 
-    public Optional<Product> getProductById(Long id) {
+    public Optional<List<Product>> searchProductsByName(String str) {
+        String apiUrl = "https://world.openfoodfacts.org/api/v2/search/";
+        String url = apiUrl + str + ".json";
+        SearchProductApiResponse apiResponse = restTemplate.getForObject(url, SearchProductApiResponse.class);
+        if (apiResponse != null) {
+            List<Product> products = SearchProductMapper.mapToProduct(apiResponse);
+            return Optional.of(products);
+        }
         return Optional.empty();
-    }
-
-    public List<Product> searchProductsByName(String name) {
-        return List.of();
     }
 
     public List<Product> searchProductsByCategory(String category) {

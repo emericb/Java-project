@@ -18,27 +18,15 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Optional<Product> product = productService.getProductById(id);
-        return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
     @GetMapping("/barcode/{barcode}")
     public ResponseEntity<Product> getProductByBarcode(@PathVariable String barcode) {
-        
         Optional<Product> product = productService.getProductByBarcode(barcode);
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/search")
-    public List<Product> searchProductsByName(@RequestParam String name) {
-        return productService.searchProductsByName(name);
+    @GetMapping("/search/{str}")
+    public Optional<List<Product>> searchProductsByName(@PathVariable String str) {
+        return productService.searchProductsByName(str);
     }
 
     @GetMapping("/category")

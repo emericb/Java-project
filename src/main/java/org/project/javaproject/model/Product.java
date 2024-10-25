@@ -16,9 +16,10 @@ public class Product {
     private String code;
     private String name;
     private String category;
-    private String quantity;
+    private int quantity;
     private double energyKcal;
     private String allergens;
+    private String labels;
 
     @ManyToMany(mappedBy = "products")
     private Set<Recipe> recipes;

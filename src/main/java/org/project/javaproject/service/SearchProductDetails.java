@@ -4,9 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 @Getter
 @Setter
-public class ProductDetails {
+public class SearchProductDetails {
     @JsonProperty("code")
     private String code;
 
