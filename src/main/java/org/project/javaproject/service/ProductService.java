@@ -35,8 +35,8 @@ public class ProductService {
 
 
     public Optional<List<Product>> searchProductsByName(String str) {
-        String apiUrl = "https://world.openfoodfacts.org/api/v2/search/";
-        String url = apiUrl + str + ".json";
+        String apiUrl = "https://world.openfoodfacts.org/cgi/search.pl?search_terms=";
+        String url = apiUrl + str + "&search_simple=1&action=process&json=1";
         SearchProductApiResponse apiResponse = restTemplate.getForObject(url, SearchProductApiResponse.class);
         if (apiResponse != null) {
             List<Product> products = SearchProductMapper.mapToProduct(apiResponse);
