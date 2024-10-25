@@ -18,25 +18,27 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @GetMapping
-    public List<Recipe> getAllRecipes() {
-        return recipeService.getAllRecipes();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
-        Optional<Recipe> recipe = recipeService.getRecipeById(id);
-        return recipe.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
     @PostMapping
     public Recipe createRecipe(@RequestBody Recipe recipe) {
-        return recipeService.saveRecipe(recipe);
+        return recipeService.createRecipe(recipe);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Recipe> updateRecipe(@PathVariable Long id, @RequestBody Recipe updatedRecipe) {
+        Optional<Recipe> updated = recipeService.updateRecipe(id, updatedRecipe);
+        return updated.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRecipe(@PathVariable Long id) {
         recipeService.deleteRecipe(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/suggest")
+    public ResponseEntity<List<Recipe>> suggestRecipes(@RequestBody List<String> ingredients) {
+        List<Recipe> recipes = recipeService.suggestRecipes(ingredients);
+        return ResponseEntity.ok(recipes);
     }
 }

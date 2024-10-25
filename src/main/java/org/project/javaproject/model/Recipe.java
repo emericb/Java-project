@@ -1,5 +1,6 @@
 package org.project.javaproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,6 +9,7 @@ import jakarta.persistence.ManyToMany;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Setter
@@ -34,4 +36,8 @@ public class Recipe {
 
     }
 
+    @JsonIgnore
+    public Set<Product> getProducts() {
+        return products;
+    }
 }
