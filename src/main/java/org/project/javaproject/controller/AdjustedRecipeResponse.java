@@ -11,11 +11,13 @@ public class AdjustedRecipeResponse {
     private String recipeName;
     private List<ProductQuantity> products;
     private int desiredServings;
+    private int caloriesPerServing;
 
-    public AdjustedRecipeResponse(String recipeName, List<ProductQuantity> products, int desiredServings) {
+    public AdjustedRecipeResponse(String recipeName, List<ProductQuantity> products, int desiredServings, int caloriesPerServing) {
         this.recipeName = recipeName;
         this.products = products;
         this.desiredServings = desiredServings;
+        this.caloriesPerServing = caloriesPerServing;
     }
 
     @Setter

@@ -16,7 +16,6 @@ public class Recipe {
     private Long id;
     private String name;
     private String description;
-
     private int servings;
 
     @ManyToMany
