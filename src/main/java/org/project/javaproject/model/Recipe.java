@@ -9,7 +9,6 @@ import jakarta.persistence.ManyToMany;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.Set;
 
 @Setter
@@ -21,6 +20,7 @@ public class Recipe {
     private Long id;
     private String name;
     private String description;
+    private int servings;
 
     @ManyToMany
     private Set<Product> products;
