@@ -49,8 +49,12 @@ public class RecipeService {
                         return new AdjustedRecipeResponse.ProductQuantity(product.getName(), adjustedQuantity);
                     })
                     .collect(Collectors.toList());
+            int totalCalories = recipe.getProducts().stream()
+                    .mapToInt(product -> (int) (product.getEnergyKcal() * product.getQuantity()))
+                    .sum();
+            int newCaloriesPerServing = totalCalories / servings;
             recipe.setServings(servings);
-            return Optional.of(new AdjustedRecipeResponse(recipe.getName(), adjustedProducts, servings));
+            return Optional.of(new AdjustedRecipeResponse(recipe.getName(), adjustedProducts, servings, newCaloriesPerServing));
         }
         return Optional.empty();
     }
