@@ -37,8 +37,11 @@ public class RecipeController {
     }
 
     @PostMapping("/suggest")
-    public ResponseEntity<List<Recipe>> suggestRecipes(@RequestBody List<String> ingredients) {
+    public ResponseEntity<?> suggestRecipes(@RequestBody List<String> ingredients) {
         List<Recipe> recipes = recipeService.suggestRecipes(ingredients);
+        if (recipes.isEmpty()) {
+            return ResponseEntity.ok().body("{\"message\": \"No recipes found\"}");
+        }
         return ResponseEntity.ok(recipes);
     }
 
