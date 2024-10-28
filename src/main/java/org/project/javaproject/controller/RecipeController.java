@@ -41,4 +41,11 @@ public class RecipeController {
         List<Recipe> recipes = recipeService.suggestRecipes(ingredients);
         return ResponseEntity.ok(recipes);
     }
+
+    @PutMapping("/{id}/servings/{servings}")
+    public ResponseEntity<AdjustedRecipeResponse> adjustRecipeServings(@PathVariable Long id, @PathVariable int servings) {
+        Optional<AdjustedRecipeResponse> adjustedRecipe = recipeService.adjustRecipeServings(id, servings);
+        return adjustedRecipe.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

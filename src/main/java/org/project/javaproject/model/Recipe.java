@@ -1,15 +1,10 @@
 package org.project.javaproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.Set;
 
 @Setter
@@ -22,22 +17,16 @@ public class Recipe {
     private String name;
     private String description;
 
+    private int servings;
+
     @ManyToMany
     private Set<Product> products;
-
-    public Recipe(Long id, String name, String description, Set<Product> products) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.products = products;
-    }
-
-    public Recipe() {
-
-    }
 
     @JsonIgnore
     public Set<Product> getProducts() {
         return products;
+    }
+
+    public Recipe() {
     }
 }
