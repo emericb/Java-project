@@ -18,6 +18,11 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
+    @GetMapping
+    public List<Recipe> getAllRecipes() {
+        return recipeService.getAllRecipes();
+    }
+
     @PostMapping
     public Recipe createRecipe(@RequestBody Recipe recipe) {
         return recipeService.createRecipe(recipe);

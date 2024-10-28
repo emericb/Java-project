@@ -70,4 +70,8 @@ public class RecipeService {
     public Optional<Recipe> getRecipeById(Long id) {
         return recipeRepository.findById(id);
     }
+
+    public List<Recipe> getAllRecipes() {
+        return recipeRepository.findAll();
+    }
 }
