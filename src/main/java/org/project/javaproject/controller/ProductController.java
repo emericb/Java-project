@@ -18,6 +18,12 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
+    }
+
     @GetMapping("/barcode/{barcode}")
     public ResponseEntity<Product> getProductByBarcode(@PathVariable String barcode) {
         Optional<Product> product = productService.getProductByBarcode(barcode);

@@ -7,7 +7,9 @@ import jakarta.persistence.ManyToMany;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -32,5 +34,10 @@ public class Product {
     @JsonIgnore
     public Set<Recipe> getRecipes() {
         return recipes;
+    }
+
+    public Set<String> getAllergens() {
+        return Arrays.stream(allergens.split(","))
+                .collect(Collectors.toSet());
     }
 }

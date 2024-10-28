@@ -58,8 +58,11 @@ public class RecipeService {
                     .mapToInt(product -> (int) (product.getEnergyKcal() * product.getQuantity()))
                     .sum();
             int newCaloriesPerServing = totalCalories / servings;
+            Set<String> allergens = recipe.getProducts().stream()
+                    .flatMap(product -> product.getAllergens().stream())
+                    .collect(Collectors.toSet());
             recipe.setServings(servings);
-            return Optional.of(new AdjustedRecipeResponse(recipe.getName(), adjustedProducts, servings, newCaloriesPerServing));
+            return Optional.of(new AdjustedRecipeResponse(recipe.getName(), adjustedProducts, servings, newCaloriesPerServing, allergens));
         }
         return Optional.empty();
     }
