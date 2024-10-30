@@ -1,6 +1,9 @@
 package org.project.javaproject.service;
 
+import org.project.javaproject.controller.RecipeWithIngredientsRequest;
+import org.project.javaproject.model.Product;
 import org.project.javaproject.model.Recipe;
+import org.project.javaproject.repository.ProductRepository;
 import org.project.javaproject.repository.RecipeRepository;
 import org.project.javaproject.controller.AdjustedRecipeResponse;
 import org.springframework.stereotype.Service;
@@ -9,14 +12,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.HashSet;
 
 @Service
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;
+    private final ProductRepository productRepository;
 
-    public RecipeService(RecipeRepository recipeRepository) {
+    public RecipeService(RecipeRepository recipeRepository, ProductRepository productRepository) {
         this.recipeRepository = recipeRepository;
+        this.productRepository = productRepository;
     }
 
     public Recipe createRecipe(Recipe recipe) {
@@ -73,5 +79,21 @@ public class RecipeService {
 
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
+    }
+
+    public Recipe createRecipeWithIngredients(RecipeWithIngredientsRequest request) {
+        Recipe recipe = new Recipe();
+        recipe.setName(request.getName());
+        recipe.setDescription(request.getDescription());
+        recipe.setServings(request.getServings());
+
+        Recipe savedRecipe = recipeRepository.save(recipe);
+
+        Set<String> productCodes = request.getProductCodes() != null ? new HashSet<>(request.getProductCodes()) : new HashSet<>();
+        for (String productCode : productCodes) {
+            recipeRepository.addProductToRecipe(savedRecipe.getId(), productCode);
+        }
+
+        return savedRecipe;
     }
 }

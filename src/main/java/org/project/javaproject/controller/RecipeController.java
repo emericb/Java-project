@@ -56,4 +56,10 @@ public class RecipeController {
         return adjustedRecipe.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @PostMapping("/createWithIngredients")
+    public ResponseEntity<Recipe> createRecipeWithIngredients(@RequestBody RecipeWithIngredientsRequest request) {
+        Recipe createdRecipe = recipeService.createRecipeWithIngredients(request);
+        return ResponseEntity.ok(createdRecipe);
+    }
 }
