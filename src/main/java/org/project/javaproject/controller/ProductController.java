@@ -2,10 +2,13 @@ package org.project.javaproject.controller;
 
 import org.project.javaproject.model.Product;
 import org.project.javaproject.service.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -38,5 +41,28 @@ public class ProductController {
     @GetMapping("/category")
     public List<Product> searchProductsByCategory(@RequestParam String category) {
         return productService.searchProductsByCategory(category);
+    }
+
+    // Endpoint pour recevoir les produits sélectionnés
+    @PostMapping("/add")
+    public ResponseEntity<String> addProductsToShoppingList(@RequestBody List<Product> selectedProducts) {
+        // Logique pour enregistrer les produits dans la BDD
+        productService.saveSelectedProducts(selectedProducts);
+
+        return new ResponseEntity<>("Produits ajoutés avec succès", HttpStatus.OK);
+    }
+
+    @PatchMapping("/decrement/{name}")
+    public ResponseEntity<Map<String, String>> decrementProductQuantity(@PathVariable String name) {
+        try {
+            productService.decrementProductQuantityByName(name);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Quantité du produit décrémentée avec succès.");
+
+            return ResponseEntity.ok(response); // Retourne un objet JSON
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+        }
     }
 }

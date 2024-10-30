@@ -6,6 +6,7 @@ import org.project.javaproject.utils.ProductMapper;
 import org.project.javaproject.utils.SearchProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -54,5 +55,34 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    @Transactional
+    public void saveSelectedProducts(List<Product> selectedProducts) {
+        for (Product product : selectedProducts) {
+            // Chercher le produit par son nom ou autre identifiant
+            Product existingProduct = productRepository.findByName(product.getName())
+                    .orElse(new Product());
+
+            // Met à jour les informations du produit (ici, juste la quantité)
+            existingProduct.setName(product.getName());
+            existingProduct.setQuantity(existingProduct.getQuantity() + product.getQuantity());
+
+            // Enregistrer ou mettre à jour dans la base de données
+            productRepository.save(existingProduct);
+        }
+    }
+
+    @Transactional
+    public void decrementProductQuantityByName(String productName) {
+        Product existingProduct = productRepository.findByName(productName)
+                .orElseThrow(() -> new RuntimeException("Produit non trouvé : " + productName));
+
+        if (existingProduct.getQuantity() > 0) {
+            existingProduct.setQuantity(existingProduct.getQuantity() - 1); // Décrémente la quantité
+            productRepository.save(existingProduct); // Enregistre les modifications
+        } else {
+            throw new RuntimeException("La quantité ne peut pas être inférieure à zéro pour le produit : " + productName);
+        }
     }
 }
