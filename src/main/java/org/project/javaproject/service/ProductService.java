@@ -1,6 +1,7 @@
 package org.project.javaproject.service;
 
 import org.project.javaproject.model.Product;
+import org.project.javaproject.repository.ProductRepository;
 import org.project.javaproject.utils.ProductMapper;
 import org.project.javaproject.utils.SearchProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,12 @@ import java.util.Optional;
 public class ProductService {
 
     private final RestTemplate restTemplate;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public ProductService(RestTemplate restTemplate) {
+    public ProductService(RestTemplate restTemplate, ProductRepository productRepository) {
         this.restTemplate = restTemplate;
+        this.productRepository = productRepository;
     }
 
     public Optional<Product> getProductByBarcode(String barcode) {
@@ -47,5 +50,9 @@ public class ProductService {
 
     public List<Product> searchProductsByCategory(String category) {
         return List.of();
+    }
+
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 }

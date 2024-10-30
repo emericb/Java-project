@@ -18,6 +18,11 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
+    @GetMapping
+    public List<Recipe> getAllRecipes() {
+        return recipeService.getAllRecipes();
+    }
+
     @PostMapping
     public Recipe createRecipe(@RequestBody Recipe recipe) {
         return recipeService.createRecipe(recipe);
@@ -37,8 +42,18 @@ public class RecipeController {
     }
 
     @PostMapping("/suggest")
-    public ResponseEntity<List<Recipe>> suggestRecipes(@RequestBody List<String> ingredients) {
+    public ResponseEntity<?> suggestRecipes(@RequestBody List<String> ingredients) {
         List<Recipe> recipes = recipeService.suggestRecipes(ingredients);
+        if (recipes.isEmpty()) {
+            return ResponseEntity.ok().body("{\"message\": \"No recipes found\"}");
+        }
         return ResponseEntity.ok(recipes);
+    }
+
+    @PutMapping("/{id}/servings/{servings}")
+    public ResponseEntity<AdjustedRecipeResponse> adjustRecipeServings(@PathVariable Long id, @PathVariable int servings) {
+        Optional<AdjustedRecipeResponse> adjustedRecipe = recipeService.adjustRecipeServings(id, servings);
+        return adjustedRecipe.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
